@@ -1,6 +1,7 @@
 triangleNormal = require 'triangle-normal'
 Vector = require '@datatypes/vector'
 
+
 calculateSurfaceArea = (vertices) ->
 	Δ1X = vertices[1].x - vertices[0].x
 	Δ1Y = vertices[1].y - vertices[0].y
@@ -18,18 +19,27 @@ calculateSurfaceArea = (vertices) ->
 
 
 class Face
-	constructor: (@vertices = [], @normal = null) ->
+	constructor: (@vertices = [], @normal) ->
+		@surfaceArea = undefined
 		return
 
 	@fromVertexArray: (array) ->
 		return new Face array
 
 	@fromObject: ({vertices, normal}) ->
-		normal ?= new Vector 0, 0, 0
 		return new Face vertices, normal
 
 	addVertex: (vertex) ->
+		@surfaceArea = undefined
+		@normal = undefined
 		@vertices.push vertex
+		return @
+
+	removeVertex: (index) ->
+		@surfaceArea = undefined
+		@normal = undefined
+		@vertices.splice index, 1
+		return @
 
 	calculateNormal: () ->
 		normalCoordinates = triangleNormal(
@@ -37,16 +47,31 @@ class Face
 			@vertices[1].x, @vertices[1].y, @vertices[1].z,
 			@vertices[2].x, @vertices[2].y, @vertices[2].z
 		)
-
 		@normal = new Vector normalCoordinates...
+		return @
+
+	getNormal: () ->
+		if not @normal
+			@calculateNormal()
+		return @normal
+
+	calculateSurfaceArea: ->
+		@surfaceArea = calculateSurfaceArea @vertices
+		return @
 
 	getSurfaceArea: ->
-		return calculateSurfaceArea @vertices
+		if not @surfaceArea
+			@calculateSurfaceArea()
+		return @surfaceArea
 
-	toObject: -> {
-		vertices: @vertices,
-		normal: @normal
-	}
+	toObject: ->
+		returnObject = {}
+		if @vertices? then returnObject.vertices =
+			@vertices.map (vertex) -> {x: vertex.x, y: vertex.y, z: vertex.z}
+		if @normal? then returnObject.normal =
+			{x: @normal.x, y: @normal.y, z: @normal.z}
+		if @surfaceArea? then returnObject.surfaceArea = @surfaceArea
+		return returnObject
 
 	toJSON: -> @toObject()
 
