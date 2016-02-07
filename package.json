@@ -1,6 +1,6 @@
 {
   "name": "@datatypes/face",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Class for 2-faces to use as facets of polyhedrons and polygon meshes",
   "main": "index.js",
   "directories": {
