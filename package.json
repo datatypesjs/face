@@ -1,0 +1,42 @@
+{
+  "name": "@datatypes/face",
+  "version": "0.1.0",
+  "description": "Class for 2-faces to use as facets of polyhedrons and polygon meshes",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "npm run build && ava --verbose",
+    "build": "coffee -c .",
+    "prepublish": "npm test && npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/datatypesjs/Face.git"
+  },
+  "keywords": [
+    "face",
+    "facet",
+    "triangle",
+    "polygon mesh",
+    "triangle mesh",
+    "2-face",
+    "polyhedron"
+  ],
+  "author": "Adrian Sieber",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/datatypesjs/Face/issues"
+  },
+  "homepage": "https://github.com/datatypesjs/Face#readme",
+  "dependencies": {
+    "@datatypes/point": "^0.2.1",
+    "triangle-normal": "0.0.0"
+  },
+  "devDependencies": {
+    "ava": "^0.11.0",
+    "clone": "^1.0.2",
+    "coffee-script": "^1.10.0"
+  }
+}
